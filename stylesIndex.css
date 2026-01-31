@@ -176,3 +176,18 @@ small {
     padding: 6px 10px;
   }
 }
+
+.register-btn {
+  display: inline-block;
+  margin: 8px 0 12px;
+  padding: 8px 16px;
+  background: #00e676;
+  color: #000;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.register-btn:hover {
+  background: #00c853;
+}
