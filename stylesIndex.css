@@ -25,37 +25,8 @@ body::before {
   z-index: 10;
 }
 
-/* Logo circle */
-body::after {
-  content: "";
-  position: fixed;
-  top: 14px;
-  left: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #38bdf8, #6366f1);
-  background-image: url("KYRON.png");
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 0 18px rgba(99,102,241,0.7);
-  z-index: 11;
-}
 
-/* KYRON-Esports text */
-.section:first-of-type::before {
-  content: "KYRON-Esports";
-  position: fixed;
-  top: 22px;
-  left: 72px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: #e5e7eb;
-  z-index: 11;
-}
-
-/* ================= ADMIN BUTTON ================= */
+/* ================= BUTTON ================= */
 .top-actions {
   position: fixed;
   top: 18px;
@@ -75,6 +46,16 @@ body::after {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
+.top-actions button:hover {
+  background: rgba(99,102,241,0.15);
+  transform: scale(1.05);
+}
+.admin-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  border: none !important;
+  box-shadow: 0 0 12px rgba(239,68,68,0.5);
+}
 /* ================= REGISTER BUTTON ================= */
 .register-btn {
   display: inline-block;
@@ -93,16 +74,6 @@ body::after {
 .register-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 16px rgba(195, 255, 54, 0.75);
-}
-
-.top-actions button:hover {
-  background: rgba(99,102,241,0.15);
-  transform: scale(1.05);
-}
-.admin-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-  border: none !important;
-  box-shadow: 0 0 12px rgba(239,68,68,0.5);
 }
 
 
@@ -216,4 +187,3 @@ small {
     padding: 6px 10px;
   }
 }
-
