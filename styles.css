@@ -20,6 +20,50 @@ body {
   color: var(--text);
   font-family: "Segoe UI", Arial, sans-serif;
 }
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 72px;
+  width: 100%;
+  background: linear-gradient(90deg, #0f172a, #020617);
+  border-bottom: 1px solid #1e293b;
+  z-index: 10;
+}
+/* ================= BRAND ================= */
+.brand {
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 11;
+}
+
+/* Logo */
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  background-image: url("KYRON.png");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 18px rgba(99,102,241,0.7);
+}
+
+/* Text */
+.brand-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #e5e7eb;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
 
 /* ================= HEADINGS ================= */
 
@@ -118,4 +162,19 @@ tr:hover td {
   table {
     font-size: 14px;
   }
+  .brand {
+  top: 18px;
+  left: 14px;
+  gap: 10px;
+}
+
+.brand-logo {
+  width: 38px;
+  height: 38px;
+}
+
+.brand-title {
+  font-size: 1.05rem;
+}
+
 }
