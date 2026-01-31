@@ -75,6 +75,25 @@ body::after {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+/* ================= REGISTER BUTTON ================= */
+.register-btn {
+  display: inline-block;
+  margin: 10px 0 6px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #0f172a;
+  background: linear-gradient(135deg, #33ff00, #00ffbb);
+  box-shadow: 0 0 10px rgba(2, 255, 217, 0.45);
+  transition: all 0.2s ease;
+}
+
+.register-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(195, 255, 54, 0.75);
+}
 
 .top-actions button:hover {
   background: rgba(99,102,241,0.15);
@@ -197,3 +216,4 @@ small {
     padding: 6px 10px;
   }
 }
+
