@@ -30,6 +30,7 @@
   <option value="Squad">Squad</option>
 </select><br>
 <input id="date" type="date"><br>
+<input id="formLink" placeholder="Google Form Link"><br>
 <button onclick="createMatch()">Create Match</button>
 
 <p id="msg"></p>
@@ -69,6 +70,7 @@ window.createMatch = async () => {
   const game = gameEl.value;
   const mode = modeEl.value;
   const date = dateEl.value;
+  const formLink = formLinkEl.value;
 
   if (!matchName || !game || !mode || !date) return;
 
@@ -77,6 +79,7 @@ window.createMatch = async () => {
     game,
     mode,
     date,
+    formLink, // ✅ NEW
     status: "registration",
     createdAt: Date.now()
   });
@@ -84,6 +87,7 @@ window.createMatch = async () => {
   msg.innerText = "Match created";
   loadMatches();
 };
+
 
 async function loadMatches() {
   matchList.innerHTML = "";
@@ -100,6 +104,8 @@ const matchNameEl = document.getElementById("matchName");
 const gameEl = document.getElementById("game");
 const modeEl = document.getElementById("mode");
 const dateEl = document.getElementById("date");
+const formLinkEl = document.getElementById("formLink");
+
 </script>
 
 </body>
