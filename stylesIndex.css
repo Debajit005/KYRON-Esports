@@ -56,24 +56,36 @@ body::after {
 }
 
 /* ================= ADMIN BUTTON ================= */
-button {
+.top-actions {
   position: fixed;
   top: 18px;
   right: 16px;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 8px 14px;
-  box-shadow: 0 0 12px rgba(239,68,68,0.5);
+  display: flex;
+  gap: 10px;
   z-index: 12;
 }
+.top-actions button {
+  background: #020617;
+  color: #eaeaf0;
+  border: 1px solid #1e293b;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-button:hover {
+.top-actions button:hover {
+  background: rgba(99,102,241,0.15);
   transform: scale(1.05);
 }
+.admin-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  border: none !important;
+  box-shadow: 0 0 12px rgba(239,68,68,0.5);
+}
+
 
 /* ================= SECTIONS ================= */
 .section {
@@ -174,25 +186,14 @@ small {
     left: 64px;
   }
 
-  button {
-    font-size: 0.75rem;
+  .top-actions {
+    top: 14px;
+    right: 10px;
+    gap: 6px;
+  }
+
+  .top-actions button {
+    font-size: 0.7rem;
     padding: 6px 10px;
   }
 }
-
-.register-btn {
-  display: inline-block;
-  margin: 8px 0 12px;
-  padding: 8px 16px;
-  background: #00e676;
-  color: #000;
-  font-weight: 600;
-  border-radius: 6px;
-  text-decoration: none;
-}
-
-.register-btn:hover {
-  background: #00c853;
-}
-
-
