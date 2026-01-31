@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kyron Esports – Match</title>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+      <button onclick="location.href='index.html'" style="
+        padding: 8px 14px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        ">
+        Leaderboards
+      </button>
+
+<h2 id="title"></h2>
+<p id="info"></p>
+
+<!-- 🔐 ADMIN REGISTRATION -->
+<div id="adminRegister" style="display:none;">
+  <h3>Register Player</h3>
+  <input id="uid" placeholder="Player UID"><br>
+  <input id="name" placeholder="Player Name"><br>
+  <button onclick="registerPlayer()">Register</button>
+  <p id="msg"></p>
+</div>
+
+<hr>
+
+<!-- 🔐 ADMIN PERFORMANCE ENTRY -->
+<div id="adminStats" style="display:none;">
+  <h3>Enter Match Performance</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Name</th>
+        <th>Kills</th>
+        <th>Knockdowns</th>
+        <th>Damage</th>
+        <th>Survival (mins)</th>
+        <th>MVP</th>
+        <th>Save</th>
+      </tr>
+    </thead>
+    <tbody id="adminTable"></tbody>
+  </table>
+</div>
+
+<hr>
+
+<!-- 🌍 PUBLIC VIEW -->
+<h3>Registered Players</h3>
+<table border="1">
+<thead>
+<tr>
+  <th>#</th>
+  <th>Name</th>
+  <th>Kills</th>
+  <th>Damage</th>
+  <th>Rank Points</th>
+</tr>
+</thead>
+
+<tbody id="publicTable"></tbody>
+</table>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc,
+  collection, getDocs, setDoc, updateDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfzeLVOtRFWXozN4jKX9DfrrWjVFIGyuw",
+  authDomain: "kyron-esports.firebaseapp.com",
+  projectId: "kyron-esports",
+  storageBucket: "kyron-esports.firebasestorage.app",
+  messagingSenderId: "688589391933",
+  appId: "1:688589391933:web:798e96fef9694af816c254",
+  measurementId: "G-TK64VD9RP9"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const matchId = new URLSearchParams(location.search).get("id");
+
+// Load match info
+const matchSnap = await getDoc(doc(db, "matches", matchId));
+const match = matchSnap.data();
+
+title.innerText = match.matchName;
+info.innerText = `${match.game} | ${match.mode} | ${match.date}`;
+
+// 🔐 ADMIN CHECK
+let isAdmin = false;
+
+onAuthStateChanged(auth, async user => {
+  if (!user) return;
+  const snap = await getDoc(doc(db, "admin", user.uid));
+  if (snap.exists()) {
+    isAdmin = true;
+    adminRegister.style.display = "block";
+    adminStats.style.display = "block";
+  }
+  loadPlayers();
+});
+
+// 🔹 Register Player
+window.registerPlayer = async () => {
+  const uidInput = document.getElementById("uid");
+  const nameInput = document.getElementById("name");
+  const msgEl = document.getElementById("msg");
+
+  const uidVal = uidInput.value.trim();
+  const nameVal = nameInput.value.trim();
+
+  if (!uidVal || !nameVal) {
+    msgEl.innerText = "UID and Name are required";
+    return;
+  }
+
+  await setDoc(doc(db, "matches", matchId, "registrations", uidVal), {
+    uid: uidVal,
+    name: nameVal,
+    kills: 0,
+    knockdowns: 0,
+    damage: 0,
+    survivalTime: 0,
+    mvp: 0,
+    rankPoints: 0,
+    registeredAt: Date.now()
+  });
+
+  uidInput.value = "";
+  nameInput.value = "";
+  msgEl.innerText = "Player registered";
+  loadPlayers();
+};
+
+// 🔹 ADD: Ranking calculation function
+function calculateRankPoints(p, totalPlayers) {
+  if (match.game === "BR") {
+    return (
+      (p.mvp || 0) +
+      (p.kills / totalPlayers) +
+      (0.5 * (p.knockdowns / totalPlayers)) +
+      (p.damage / 10000) +
+      (p.survivalTime / 15)
+    );
+  } else { // CS
+    return (
+      (p.mvp || 0) +
+      (p.kills / totalPlayers) +
+      (0.5 * (p.knockdowns / totalPlayers)) +
+      (p.damage / 10000)
+    );
+  }
+}
+
+// 🔹 Load players (admin + public)
+async function loadPlayers() {
+  adminTable.innerHTML = "";
+  publicTable.innerHTML = "";
+
+  const snap = await getDocs(collection(db, "matches", matchId, "registrations"));
+  const players = [];
+
+  snap.forEach(d => players.push(d.data()));
+
+  const totalPlayers = players.length;
+
+  // 🔹 ADD: calculate + sort by rankPoints
+  players.forEach(p => {
+    p.rankPoints = calculateRankPoints(p, totalPlayers);
+  });
+
+  players.sort((a, b) => b.rankPoints - a.rankPoints);
+
+  let i = 1;
+  players.forEach(p => {
+    publicTable.innerHTML += `
+      <tr>
+        <td>${i++}</td>
+        <td>${p.name}</td>
+        <td>${p.kills}</td>
+        <td>${p.damage}</td>
+        <td>${p.rankPoints.toFixed(3)}</td>
+      </tr>
+`;
+
+
+    if (isAdmin) {
+      adminTable.innerHTML += `
+        <tr>
+          <td>${p.uid}</td>
+          <td>${p.name}</td>
+          <td><input id="k_${p.uid}" value="${p.kills}"></td>
+          <td><input id="kd_${p.uid}" value="${p.knockdowns}"></td>
+          <td><input id="d_${p.uid}" value="${p.damage}"></td>
+          <td><input id="s_${p.uid}" value="${p.survivalTime}"></td>
+          <td><input id="m_${p.uid}" value="${p.mvp}"></td>
+          <td><button onclick="saveStats('${p.uid}')">Save</button></td>
+        </tr>
+      `;
+    }
+  });
+}
+
+// 🔹 Save performance
+window.saveStats = async (uid) => {
+  const kills = Number(document.getElementById(`k_${uid}`)?.value || 0);
+  const knockdowns = Number(document.getElementById(`kd_${uid}`)?.value || 0);
+  const damage = Number(document.getElementById(`d_${uid}`)?.value || 0);
+  const survivalTime = Number(document.getElementById(`s_${uid}`)?.value || 0);
+  const mvp = Number(document.getElementById(`m_${uid}`)?.value || 0);
+
+  const totalPlayers =
+    document.querySelectorAll("#adminTable tr").length || 1;
+
+  let rankPoints = 0;
+
+  if (match.game === "BR") {
+    rankPoints =
+      (mvp) +
+      (kills / totalPlayers) +
+      (0.5 * (knockdowns / totalPlayers)) +
+      (damage / 10000) +
+      (survivalTime / 15);
+  } else { // CS
+    rankPoints =
+      (mvp) +
+      (kills / totalPlayers) +
+      (0.5 * (knockdowns / totalPlayers)) +
+      (damage / 10000);
+  }
+
+  await updateDoc(
+    doc(db, "matches", matchId, "registrations", uid),
+    {
+      kills,
+      knockdowns,
+      damage,
+      survivalTime,
+      mvp,
+      rankPoints
+    }
+  );
+
+  alert("Stats & rank points saved");
+  loadPlayers();
+};
+
+
+</script>
+
+</body>
+</html>

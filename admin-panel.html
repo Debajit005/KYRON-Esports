@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kyron Esports – Admin Panel</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styleAdminPanel.css">
+
+</head>
+<body>
+      <button onclick="location.href='index.html'" style="
+        padding: 8px 14px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        ">
+        Leaderboards
+      </button>
+<h2>Admin Panel</h2>
+
+<h3>Create Match</h3>
+<input id="matchName" placeholder="Match Name"><br>
+<select id="game">
+  <option value="">Game</option>
+  <option value="BR">Battle Royale</option>
+  <option value="CS">Clash Squad</option>
+</select><br>
+<select id="mode">
+  <option value="">Mode</option>
+  <option value="Solo">Solo</option>
+  <option value="Duo">Duo</option>
+  <option value="Squad">Squad</option>
+</select><br>
+<input id="date" type="date"><br>
+<button onclick="createMatch()">Create Match</button>
+
+<p id="msg"></p>
+
+<h3>Existing Matches</h3>
+<ul id="matchList"></ul>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfzeLVOtRFWXozN4jKX9DfrrWjVFIGyuw",
+  authDomain: "kyron-esports.firebaseapp.com",
+  projectId: "kyron-esports",
+  storageBucket: "kyron-esports.firebasestorage.app",
+  messagingSenderId: "688589391933",
+  appId: "1:688589391933:web:798e96fef9694af816c254",
+  measurementId: "G-TK64VD9RP9"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 🔐 Protect page
+onAuthStateChanged(auth, async user => {
+  if (!user) return location.href = "admin-gate.html";
+  const snap = await getDoc(doc(db, "admin", user.uid));
+  if (!snap.exists()) location.href = "index.html";
+  loadMatches();
+});
+
+window.createMatch = async () => {
+  const matchName = matchNameEl.value;
+  const game = gameEl.value;
+  const mode = modeEl.value;
+  const date = dateEl.value;
+
+  if (!matchName || !game || !mode || !date) return;
+
+  await addDoc(collection(db, "matches"), {
+    matchName,
+    game,
+    mode,
+    date,
+    status: "registration",
+    createdAt: Date.now()
+  });
+
+  msg.innerText = "Match created";
+  loadMatches();
+};
+
+async function loadMatches() {
+  matchList.innerHTML = "";
+  const snap = await getDocs(collection(db, "matches"));
+  snap.forEach(d => {
+    const li = document.createElement("li");
+    li.innerHTML = `${d.data().matchName} (${d.data().game}) 
+      <a href="match.html?id=${d.id}">View</a>`;
+    matchList.appendChild(li);
+  });
+}
+
+const matchNameEl = document.getElementById("matchName");
+const gameEl = document.getElementById("game");
+const modeEl = document.getElementById("mode");
+const dateEl = document.getElementById("date");
+</script>
+
+</body>
+</html>

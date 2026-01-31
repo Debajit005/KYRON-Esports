@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kyron Esports – Admin Gate</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="stylesAdminGate.css">
+
+</head>
+<body>
+
+<h2>Admin Login</h2>
+
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+<button onclick="location.href='index.html'" style="
+  padding: 8px 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  ">
+  Leaderboards
+</button>
+
+<p id="msg"></p>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDfzeLVOtRFWXozN4jKX9DfrrWjVFIGyuw",
+  authDomain: "kyron-esports.firebaseapp.com",
+  projectId: "kyron-esports",
+  storageBucket: "kyron-esports.firebasestorage.app",
+  messagingSenderId: "688589391933",
+  appId: "1:688589391933:web:798e96fef9694af816c254",
+  measurementId: "G-TK64VD9RP9"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.login = async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const msg = document.getElementById("msg");
+
+  msg.innerText = "Checking...";
+
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = cred.user.uid;
+
+    const snap = await getDoc(doc(db, "admin", uid));
+
+    if (snap.exists()) {
+      window.location.href = "admin-panel.html";
+    } else {
+      msg.innerText = "Not an admin";
+      setTimeout(() => window.location.href = "index.html", 1500);
+    }
+  } catch {
+    msg.innerText = "Login failed";
+  }
+};
+</script>
+
+</body>
+</html>

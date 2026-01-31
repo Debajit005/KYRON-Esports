@@ -1,0 +1,198 @@
+/* ================= KYRON HEADER (ADMIN PANEL) ================= */
+
+/* Top bar */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 72px;
+  width: 100%;
+  background: linear-gradient(90deg, #0f172a, #020617);
+  border-bottom: 1px solid #1e293b;
+  z-index: 10;
+}
+
+/* Circular logo */
+body::after {
+  content: "";
+  position: fixed;
+  top: 14px;
+  left: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 0 18px rgba(99,102,241,0.7);
+  z-index: 11;
+}
+
+/* KYRON-Esports name */
+body > h2::before {
+  content: "KYRON-Esports";
+  position: fixed;
+  top: 22px;
+  left: 72px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #e5e7eb;
+  z-index: 11;
+}
+
+/* Push content below header */
+body {
+  padding-top: 120px;
+}
+/* ================= ADMIN PANEL STYLING ================= */
+
+/* Page width control */
+body {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Headings */
+h2 {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 1.7rem;
+}
+
+h3 {
+  margin-top: 40px;
+  margin-bottom: 14px;
+  font-size: 1.2rem;
+  color: #c7d2fe;
+}
+
+/* Inputs & selects */
+input,
+select {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}
+
+select option {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99,102,241,0.25);
+}
+
+/* Buttons */
+button {
+  display: inline-block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  box-shadow: 0 0 14px rgba(99,102,241,0.45);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Leaderboards button (top one) */
+body > button:first-of-type {
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  position: fixed;
+  top: 18px;
+  right: 16px;
+  z-index: 12;
+
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  box-shadow: 0 0 12px rgba(99,102,241,0.5);
+}
+
+
+/* Create Match button */
+body > button:last-of-type {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 0 14px rgba(34,197,94,0.45);
+}
+
+/* Status message */
+#msg {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #fbbf24;
+}
+
+/* Existing matches list */
+#matchList {
+  margin-top: 14px;
+  list-style: none;
+  padding: 0;
+  max-width: 600px;
+}
+
+#matchList li {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#matchList a {
+  text-decoration: none;
+  font-size: 0.8rem;
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+#matchList a:hover {
+  text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 600px) {
+  body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+  }
+
+  input,
+  select {
+    font-size: 0.85rem;
+  }
+}
