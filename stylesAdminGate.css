@@ -32,35 +32,6 @@ body::before {
   z-index: 10;
 }
 
-/* Circular logo */
-body::after {
-  content: "";
-  position: fixed;
-  top: 14px;
-  left: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #38bdf8, #6366f1);
-  background-image: url("KYRON.png");
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 0 18px rgba(99,102,241,0.7);
-  z-index: 11;
-}
-
-/* KYRON-Esports text */
-body > h2::before {
-  content: "KYRON-Esports";
-  position: fixed;
-  top: 22px;
-  left: 72px;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  color: #e5e7eb;
-  z-index: 11;
-}
 
 /* Push content below header */
 body {
@@ -128,4 +99,3 @@ body > button:nth-of-type(2) {
     font-size: 0.85rem;
   }
 }
-
