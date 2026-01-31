@@ -23,6 +23,9 @@ body::after {
   height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, #38bdf8, #6366f1);
+  background-image: url("KYRON.png");
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 0 18px rgba(99,102,241,0.7);
   z-index: 11;
 }
@@ -196,3 +199,4 @@ body > button:last-of-type {
     font-size: 0.85rem;
   }
 }
+
