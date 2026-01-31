@@ -180,15 +180,26 @@ if (m.date) {
   }
 }
 
+let registerBtn = "";
+
+if (m.formLink) {
+  registerBtn = `
+    <a href="${m.formLink}" target="_blank" class="register-btn">
+      📝 Register
+    </a>
+  `;
+}
 
 
   matchContainer.innerHTML += `
     <h3>${m.matchName || "Unnamed Match"}</h3>
+    ${registerBtn}
     <p>
       <strong>Game:</strong> ${m.game || "-"} |
       <strong>Mode:</strong> ${m.mode || "-"}<br>
       <small>Date: ${dateStr}</small>
     </p>
+
 
     <table>
       <thead>
@@ -211,3 +222,4 @@ if (m.date) {
 
 </body>
 </html>
+
