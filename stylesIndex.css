@@ -21,6 +21,9 @@ body::before {
   height: 72px;
   width: 100%;
   background: linear-gradient(90deg, #0f172a, #020617);
+  background-image: url("KYRON.png");
+  background-size: cover;
+  background-position: center;
   border-bottom: 1px solid #1e293b;
   z-index: 10;
 }
@@ -191,3 +194,4 @@ small {
 .register-btn:hover {
   background: #00c853;
 }
+
